@@ -5,9 +5,9 @@
   "scripts": {
     "build": "npx tsc",
     "start": "node dist/main.js",
-    "dev": "ts-node-dev src/main.ts",
-    "format": "prettier --write src/**/*.ts",
-    "format:check": "prettier --check src/**/*.ts"
+    "dev": "ts-node-dev --respawn src/main.ts",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "author": "Paul OHL",
   "license": "ISC",
@@ -19,6 +19,7 @@
     "typescript": "^5.6.2"
   },
   "dependencies": {
+    "argon2": "^0.41.1",
     "express": "^4.21.0",
     "mongoose": "^8.7.0",
     "ts-node-dev": "^2.0.0"
