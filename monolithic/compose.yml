@@ -1,6 +1,6 @@
 services:
   backend:
-    image: "node:alpine"
+    image: "node:22-alpine"
     user: "node"
     working_dir: /home/node/app
     environment:
