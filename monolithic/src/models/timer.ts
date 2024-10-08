@@ -1,5 +1,5 @@
 interface Timer {
   id: number;
-  userId: number;
+  user_id: number;
   time: number;
 }
