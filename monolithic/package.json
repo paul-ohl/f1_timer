@@ -3,9 +3,21 @@
   "version": "1.0.0",
   "main": "main.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npx tsc",
+    "start": "node dist/main.js",
+    "dev": "ts-node-dev src/main.ts"
   },
   "author": "Paul OHL",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.7.5",
+    "prettier": "3.3.3",
+    "typescript": "^5.6.2"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "ts-node-dev": "^2.0.0"
+  }
 }
