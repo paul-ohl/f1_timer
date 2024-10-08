@@ -1,5 +1,5 @@
 import { connect_to_database } from "./config/db";
-import express, { Express } from "express";
+import * as express from "express";
 import router from "./routes/router";
 
 async function main() {
@@ -15,7 +15,7 @@ async function main() {
     throw new Error("JWT_SECRET is not set");
   }
 
-  const app: Express = express();
+  const app: express.Express = express();
   app.use(express.json());
   app.use("/", router);
   app.listen(3000, () => {

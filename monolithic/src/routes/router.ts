@@ -13,8 +13,9 @@ router.get("/health", (_req, res) => {
 });
 
 router.get("/protected", authMiddleware, (_req, res) => {
+  const userEmail = res.locals.jwt.email;
   res.status(200);
-  res.send("Protected OK");
+  res.send(`Protected OK for ${userEmail}`);
 });
 
 router.post("/register", async (req, res) => {

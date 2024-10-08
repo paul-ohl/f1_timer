@@ -1,5 +1,5 @@
 import { User } from "../models/user.model";
-import jwt from "jsonwebtoken";
+import * as jwt from "jsonwebtoken";
 import JwtPayload from "../types/jwtPayload";
 
 export function generateJwtToken(user: User): string {
@@ -21,6 +21,9 @@ export function verifyJwtToken(token: string): JwtPayload {
   if (!process.env.JWT_SECRET) {
     throw new Error("JWT_SECRET is not set");
   }
-  const decoded = jwt.verify(token, process.env.JWT_SECRET);
-  return decoded as JwtPayload;
+  const decoded: jwt.JwtPayload = jwt.verify(
+    token,
+    process.env.JWT_SECRET,
+  ) as jwt.JwtPayload;
+  return decoded.payload as JwtPayload;
 }

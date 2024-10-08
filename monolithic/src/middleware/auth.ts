@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { verifyJwtToken } from "../utils/jwt";
+import JwtPayload from "../types/jwtPayload";
 
 export function authMiddleware(
   req: Request,
@@ -13,7 +14,7 @@ export function authMiddleware(
     return;
   }
 
-  let decodedJwt;
+  let decodedJwt: JwtPayload;
   try {
     decodedJwt = verifyJwtToken(token);
   } catch (e: any) {
