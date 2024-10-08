@@ -7,15 +7,17 @@ class PasswordHash {
     this.hash = "";
   }
 
-  async fromClearPassword(password: string): Promise<void> {
+  async fromClearPassword(password: string): Promise<PasswordHash> {
     if (password.length < 8) {
       throw new Error("Password must be at least 8 characters long");
     }
     this.hash = await argon2.hash(password);
+    return this;
   }
 
-  fromHash(hash: string): void {
+  fromHash(hash: string): PasswordHash {
     this.hash = hash;
+    return this;
   }
 
   getHash(): string {

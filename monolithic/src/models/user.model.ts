@@ -1,23 +1,19 @@
-import { Schema } from "mongoose";
-import PasswordHash from "../types/password_hash";
+import mongoose, { Schema } from "mongoose";
+import PasswordHash from "../types/passwordHash";
 
-export type UserId = number;
+export type UserId = string;
 
 export interface User {
-  id: UserId;
-  email: string;
-  password_hash: string;
-  role: boolean;
-}
-
-export interface NewUser {
+  id?: UserId;
   email: string;
   passwordHash: PasswordHash;
   role: boolean;
 }
 
-export const NewUserSchema = new Schema({
+const UserSchema = new Schema({
   email: String,
-  password_hash: String,
+  passwordHash: String,
   role: Boolean,
 });
+
+export const UserModel = mongoose.model("User", UserSchema);

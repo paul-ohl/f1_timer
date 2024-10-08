@@ -1,18 +1,19 @@
 services:
-  # backend:
-  #   image: "node:alpine"
-  #   user: "node"
-  #   working_dir: /home/node/app
-  #   environment:
-  #     - NODE_ENV=development
-  #     - MONGO_URI=$MONGO_URI
-  #   volumes:
-  #     - ./:/home/node/app
-  #   ports:
-  #     - "3000:3000"
-  #   command: sh -c "npm install && npm run dev --host"
-  #   depends_on:
-  #     - mongo
+  backend:
+    image: "node:alpine"
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=development
+      - MONGO_URI=$MONGO_URI
+      - JWT_SECRET=$JWT_SECRET
+    volumes:
+      - ./:/home/node/app
+    ports:
+      - "3000:3000"
+    command: sh -c "npm install && npm run dev --host"
+    depends_on:
+      - mongo
 
   mongo:
     image: mongo:noble
