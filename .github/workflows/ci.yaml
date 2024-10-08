@@ -11,6 +11,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix: 
+        folder: ["monolithic"]
 
     steps:
     - name: Git checkout
@@ -27,7 +30,10 @@ jobs:
         mongodb-version: '8.0'
 
     - run: npm install
+      working-directory: ${{ matrix.folder }}
 
     - run: npm run ci
+      working-directory: ${{ matrix.folder }}
       env:
         MONGO_URI: mongo://localhost:27017/f1-timer
+        JWT_SECRET: 'secret'
