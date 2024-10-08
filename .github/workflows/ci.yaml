@@ -34,6 +34,3 @@ jobs:
 
     - run: npm run ci
       working-directory: ${{ matrix.folder }}
-      env:
-        MONGO_URI: mongo://localhost:27017/f1-timer
-        JWT_SECRET: 'secret'
