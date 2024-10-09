@@ -9,13 +9,19 @@ import {
 } from "../../src/services/user.service";
 import { assert } from "console";
 import User, { createUser, userToModel } from "../../src/types/user";
-import { generateJwtToken, JwtPayload, verifyJwtToken } from "../../src/utils/jwt";
+import {
+  generateJwtToken,
+  JwtPayload,
+  verifyJwtToken,
+} from "../../src/utils/jwt";
 import { loginUser } from "../../src/controllers/user.controller";
+import { createTimer } from "../../src/services/timer.service";
 
 describe("Timer routes", () => {
   let server: any;
   let port = Math.floor(Math.random() * 1000) + 3000;
   let jwtToken: string;
+  let userId: string;
 
   before(async () => {
     process.env.JWT_SECRET = "secret";
@@ -33,8 +39,13 @@ describe("Timer routes", () => {
     });
 
     const user = await createUser(null, "test@test.fr", "password", true);
-    const userId = await register_user(user);
-    jwtToken = generateJwtToken({id: userId, email: user.email, role: user.role, passwordHash: user.passwordHash} as User);
+    userId = await register_user(user);
+    jwtToken = generateJwtToken({
+      id: userId,
+      email: user.email,
+      role: user.role,
+      passwordHash: user.passwordHash,
+    } as User);
   });
 
   after(async () => {
@@ -67,7 +78,7 @@ describe("Timer routes", () => {
     myHeaders.append("Authorization", `Bearer ${jwtToken}`);
 
     const raw = JSON.stringify({
-        nothing: null,
+      nothing: null,
     });
 
     const response = await fetch(`http://localhost:${port}/timer`, {
@@ -78,9 +89,9 @@ describe("Timer routes", () => {
     });
     equal(response.status, 400);
     equal(await response.text(), "Please provide a time value");
-  })
+  });
 
-  it("Timer route succeeds if information is correct", async () => {
+  it("createTimer route succeeds if information is correct", async () => {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", `Bearer ${jwtToken}`);
@@ -97,7 +108,22 @@ describe("Timer routes", () => {
     });
     equal(response.status, 201);
     equal(await response.text(), "Timer created");
-  })
+  });
+
+  it("getTimersByUid succeeds with correct information", async () => {
+    const timerId1 = await createTimer(userId, 1.005);
+    const timerId2 = await createTimer(userId, 1.009);
+
+    const myHeaders = new Headers();
+    myHeaders.append("Authorization", `Bearer ${jwtToken}`);
+
+    const response = await fetch(`http://localhost:${port}/timer`, {
+      headers: myHeaders,
+      redirect: "follow",
+    });
+    equal(response.status, 200);
+    // Would be good to check the contents of the result...
+  });
 });
 
 function generateRandomString(): string {

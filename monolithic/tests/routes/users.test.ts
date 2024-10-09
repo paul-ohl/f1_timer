@@ -64,7 +64,7 @@
 //       assert(await db_user.passwordHash.verify("password"));
 //     });
 //   });
-//
+//Please provide a timer value.
 //   describe("User Login", () => {
 //     before(async () => {
 //       const user = new User(null, "test@test.fr", "password", true);
