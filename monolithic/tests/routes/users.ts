@@ -82,8 +82,8 @@ describe("User authentication route", () => {
       myHeaders.append("Content-Type", "application/json");
 
       const raw = JSON.stringify({
-        "email": "test@test.fr",
-        "password": "password",
+        email: "test@test.fr",
+        password: "password",
       });
 
       const response = await fetch(`http://localhost:${port}/login`, {
