@@ -4,6 +4,7 @@ import { User } from "../models/user.model";
 import { find_user_by_email, register_user } from "../services/user.service";
 import { generateJwtToken } from "../utils/jwt";
 import { authMiddleware } from "../middleware/auth";
+import { fail } from "assert";
 
 const router = Router();
 
@@ -13,8 +14,9 @@ router.get("/health", (_req, res) => {
 });
 
 router.get("/protected", authMiddleware, (_req, res) => {
+  const userEmail = res.locals.jwt.email;
   res.status(200);
-  res.send("Protected OK");
+  res.send(`Protected OK for ${userEmail}`);
 });
 
 router.post("/register", async (req, res) => {
@@ -46,7 +48,7 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
-  let db_user;
+  let db_user: User;
   try {
     db_user = await find_user_by_email(email);
   } catch (e: any) {
@@ -54,13 +56,17 @@ router.post("/login", async (req, res) => {
     return;
   }
 
-  db_user.passwordHash.verify(password).then((result: boolean) => {
-    if (result) {
-      res.status(200).send(generateJwtToken(db_user));
-    } else {
-      res.status(401).send("Login failed");
+  let result = await db_user.passwordHash.verify(password);
+  if (result) {
+    try {
+      const token = generateJwtToken(db_user);
+      res.status(200).send(token);
+    } catch (e: any) {
+      res.status(500).send(e.message);
     }
-  });
+  } else {
+    res.status(401).send("Login failed");
+  }
 });
 
 export default router;
