@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { verifyJwtToken } from "../utils/jwt";
-import JwtPayload from "../types/jwtPayload";
+import { JwtPayload, verifyJwtToken } from "../utils/jwt";
 
 export function authMiddleware(
   req: Request,

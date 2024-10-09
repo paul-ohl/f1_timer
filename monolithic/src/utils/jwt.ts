@@ -1,6 +1,11 @@
 import { User } from "../models/user.model";
 import * as jwt from "jsonwebtoken";
-import JwtPayload from "../types/jwtPayload";
+
+export interface JwtPayload {
+  uid: string;
+  email: string;
+  role: boolean;
+}
 
 export function generateJwtToken(user: User): string {
   if (!process.env.JWT_SECRET) {
