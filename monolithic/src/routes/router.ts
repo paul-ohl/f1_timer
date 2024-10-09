@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { authMiddleware } from "../middleware/auth";
-import { loginUser, registerUser } from "../controllers/user.controller";
+import userRouter from "./user.routes";
 
 const router = Router();
 
@@ -15,8 +15,6 @@ router.get("/protected", authMiddleware, (_req, res) => {
   res.send(`Protected OK for ${userEmail}`);
 });
 
-router.post("/register", registerUser);
-
-router.post("/login", loginUser);
+router.use("/", userRouter);
 
 export default router;
