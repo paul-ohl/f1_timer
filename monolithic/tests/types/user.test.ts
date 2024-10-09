@@ -20,14 +20,24 @@ describe("User domain object", () => {
     equal(model.id, "123");
 
     const hasher = new PasswordHash();
-    user = await createUser(null, "test@test.fr", await hasher.fromClearPassword("password"), true);
+    user = await createUser(
+      null,
+      "test@test.fr",
+      await hasher.fromClearPassword("password"),
+      true,
+    );
     model = userToModel(user);
     equal(model.email, "test@test.fr");
     equal(model.role, true);
     assert(user.passwordHash.verify("password"));
     equal(model.id, undefined);
 
-    user = await createUser("123", "test@test.fr", await hasher.fromClearPassword("password"), true);
+    user = await createUser(
+      "123",
+      "test@test.fr",
+      await hasher.fromClearPassword("password"),
+      true,
+    );
     model = userToModel(user);
     equal(model.email, "test@test.fr");
     equal(model.role, true);

@@ -10,7 +10,12 @@ interface User {
   role: boolean;
 }
 
-export async function createUser(id: UserId | null, email: string, password: string | PasswordHash, role: boolean): Promise<User> {
+export async function createUser(
+  id: UserId | null,
+  email: string,
+  password: string | PasswordHash,
+  role: boolean,
+): Promise<User> {
   if (!email || !role || !password) {
     throw new Error("User data is invalid");
   }
