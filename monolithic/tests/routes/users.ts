@@ -10,12 +10,15 @@ import {
 import { assert } from "console";
 import { User } from "../../src/models/user.model";
 import PasswordHash from "../../src/types/passwordHash";
+import { verifyJwtToken } from "../../src/utils/jwt";
 
 describe("User authentication route", () => {
   let server: any;
   let port = Math.floor(Math.random() * 1000) + 3000;
 
   before(async () => {
+    process.env.JWT_SECRET = "secret";
+
     const db_uri = `mongodb://localhost:27017/test-${generateRandomString()}`;
     process.env.MONGO_URI = db_uri;
 
@@ -30,12 +33,13 @@ describe("User authentication route", () => {
   });
 
   after(async () => {
+    // await mongoose.connection.db?.dropDatabase();
     await mongoose.connection.close();
     await server.close();
   });
 
   describe("User Registration", () => {
-    it("Login with correct data returns a 200 and saves user to db", async () => {
+    it("Register with correct data returns a 200 and saves user to db", async () => {
       const email = `${generateRandomString()}@test.fr`;
 
       const myHeaders = new Headers();
@@ -58,7 +62,7 @@ describe("User authentication route", () => {
 
       const db_user = await find_user_by_email(email);
       equal(db_user.role, true);
-      assert(db_user.passwordHash.verify("password"));
+      assert(await db_user.passwordHash.verify("password"));
     });
   });
 
@@ -73,8 +77,27 @@ describe("User authentication route", () => {
       await register_user(user);
     });
 
-    it("Login works", () => {
-      equal("This is done", "This is definitely not done.");
+    it("Login works with correct data", async () => {
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+
+      const raw = JSON.stringify({
+        "email": "test@test.fr",
+        "password": "password",
+      });
+
+      const response = await fetch(`http://localhost:${port}/login`, {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow",
+      });
+      equal(response.status, 200);
+      const token = await response.text();
+      const jwt_payload = verifyJwtToken(token);
+      equal(jwt_payload.email, "test@test.fr");
+      const db_user = await find_user_by_email("test@test.fr");
+      equal(jwt_payload.uid, db_user.id);
     });
   });
 });

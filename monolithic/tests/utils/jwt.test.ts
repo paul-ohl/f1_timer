@@ -7,6 +7,8 @@ import { equal } from "assert";
 
 describe("Jwt generator", () => {
   it("should fail if JWT_SECRET is not set", async () => {
+    delete process.env.JWT_SECRET;
+
     const hasher = new PasswordHash();
     const user: User = {
       id: "123",
