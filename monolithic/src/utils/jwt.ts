@@ -1,6 +1,11 @@
-import { User } from "../models/user.model";
+import User from "../types/user";
 import * as jwt from "jsonwebtoken";
-import JwtPayload from "../types/jwtPayload";
+
+export interface JwtPayload {
+  uid: string;
+  email: string;
+  role: boolean;
+}
 
 export function generateJwtToken(user: User): string {
   if (!process.env.JWT_SECRET) {
@@ -11,7 +16,7 @@ export function generateJwtToken(user: User): string {
   }
   const payload: JwtPayload = {
     uid: user.id,
-    email: user.email,
+    email: user.email.getEmail(),
     role: user.role,
   };
   return jwt.sign({ payload }, process.env.JWT_SECRET, { expiresIn: "10h" });

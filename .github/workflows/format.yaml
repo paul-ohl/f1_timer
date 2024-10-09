@@ -1,4 +1,4 @@
-name: Run tests
+name: Check formatting with prettier
 
 on:
   push:
@@ -24,13 +24,8 @@ jobs:
       with:
         node-version: 22.x
 
-    - name: Start MongoDB
-      uses: supercharge/mongodb-github-action@1.11.0
-      with:
-        mongodb-version: '8.0'
-
     - run: npm install
       working-directory: ${{ matrix.folder }}
 
-    - run: npm run ci
+    - run: npm run format:check
       working-directory: ${{ matrix.folder }}

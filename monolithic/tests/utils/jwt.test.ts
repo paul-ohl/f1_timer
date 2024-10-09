@@ -1,21 +1,14 @@
 import { assert } from "console";
 import * as jwt from "jsonwebtoken";
 import { verifyJwtToken, generateJwtToken } from "../../src/utils/jwt";
-import { User } from "../../src/models/user.model";
-import PasswordHash from "../../src/types/passwordHash";
+import User, { createUser } from "../../src/types/user";
 import { equal } from "assert";
 
 describe("Jwt generator", () => {
   it("should fail if JWT_SECRET is not set", async () => {
     delete process.env.JWT_SECRET;
 
-    const hasher = new PasswordHash();
-    const user: User = {
-      id: "123",
-      role: true,
-      email: "paul@test.fr",
-      passwordHash: await hasher.fromClearPassword("password"),
-    };
+    const user = await createUser("123", "paul@test.fr", "password", true);
     let error: any = null;
     try {
       generateJwtToken(user);
@@ -28,12 +21,7 @@ describe("Jwt generator", () => {
 
   it("should fail if data is incomplete", async () => {
     process.env.JWT_SECRET = "secret";
-    const hasher = new PasswordHash();
-    const user: User = {
-      role: true,
-      email: "paul@test.fr",
-      passwordHash: await hasher.fromClearPassword("password"),
-    };
+    const user = await createUser(null, "paul@test.fr", "password", true);
     let error: any = null;
     try {
       generateJwtToken(user);
@@ -46,13 +34,7 @@ describe("Jwt generator", () => {
 
   it("should fail if jwt is badly encoded", async () => {
     process.env.JWT_SECRET = "wrong_secret";
-    const hasher = new PasswordHash();
-    const user: User = {
-      id: "123",
-      role: true,
-      email: "paul@test.fr",
-      passwordHash: await hasher.fromClearPassword("password"),
-    };
+    const user = await createUser("123", "paul@test.fr", "password", true);
 
     let error: any = null;
     let token: string = "";
@@ -74,13 +56,7 @@ describe("Jwt generator", () => {
 
   it("should fail if jwt is corrupted", async () => {
     process.env.JWT_SECRET = "secret";
-    const hasher = new PasswordHash();
-    const user: User = {
-      id: "123",
-      role: true,
-      email: "paul@test.fr",
-      passwordHash: await hasher.fromClearPassword("password"),
-    };
+    const user = await createUser("123", "paul@test.fr", "password", true);
 
     let error: any = null;
     let token: string = "";
@@ -102,13 +78,7 @@ describe("Jwt generator", () => {
 
   it("should succeed if no problem", async () => {
     process.env.JWT_SECRET = "secret";
-    const hasher = new PasswordHash();
-    const user: User = {
-      id: "123",
-      role: true,
-      email: "paul@test.fr",
-      passwordHash: await hasher.fromClearPassword("password"),
-    };
+    const user = await createUser("123", "paul@test.fr", "password", true);
 
     let error: any = null;
     let token: string = "";
@@ -129,7 +99,7 @@ describe("Jwt generator", () => {
 
     const payload = verifyJwtToken(token);
     assert(payload.uid === user.id);
-    assert(payload.email === user.email);
+    assert(payload.email === user.email.getEmail());
     assert(payload.role === user.role);
   });
 });

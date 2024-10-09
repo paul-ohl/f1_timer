@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { verifyJwtToken } from "../utils/jwt";
-import JwtPayload from "../types/jwtPayload";
+import { JwtPayload, verifyJwtToken } from "../utils/jwt";
 
 export function authMiddleware(
   req: Request,
@@ -10,7 +9,7 @@ export function authMiddleware(
   const authHeader = req.header("Authorization");
   const token = authHeader?.split(" ")[1];
   if (!authHeader || !token) {
-    res.status(401).send("Unauthorized");
+    res.status(401).send("Missing Authorization token");
     return;
   }
 

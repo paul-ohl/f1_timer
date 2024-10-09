@@ -1,12 +1,9 @@
-import { User, UserId, UserModel } from "../models/user.model";
+import { UserModel } from "../models/user.model";
 import PasswordHash from "../types/passwordHash";
+import User, { UserId, createUser, userToModel } from "../types/user";
 
 export async function register_user(user: User): Promise<UserId> {
-  const newUser = new UserModel({
-    email: user.email,
-    passwordHash: user.passwordHash.getHash(),
-    role: user.role,
-  });
+  const newUser = new UserModel(userToModel(user));
   const savedUser = await newUser.save();
   if (savedUser) {
     return savedUser.id;
@@ -16,20 +13,15 @@ export async function register_user(user: User): Promise<UserId> {
 }
 
 export async function find_user_by_email(email: string): Promise<User> {
-  const user = await UserModel.findOne({ email: email });
+  const dbUser = await UserModel.findOne({ email: email });
 
-  if (!user) {
+  if (!dbUser) {
     throw new Error("User not found");
-  } else if (!user.email || !user.passwordHash || !user.role) {
+  } else if (!dbUser.email || !dbUser.passwordHash || !dbUser.role) {
     throw new Error("User data is invalid");
   }
 
   const passwordHash = new PasswordHash();
-  passwordHash.fromHash(user.passwordHash);
-  return {
-    id: user.id,
-    email: user.email,
-    passwordHash: passwordHash.fromHash(user.passwordHash),
-    role: user.role,
-  };
+  passwordHash.fromHash(dbUser.passwordHash);
+  return createUser(dbUser.id, dbUser.email, passwordHash, dbUser.role);
 }
