@@ -10,7 +10,7 @@ import {
 import { assert } from "console";
 import { User } from "../../src/models/user.model";
 import PasswordHash from "../../src/types/passwordHash";
-import { verifyJwtToken } from "../../src/utils/jwt";
+import { generateJwtToken, verifyJwtToken } from "../../src/utils/jwt";
 
 describe("User authentication route", () => {
   let server: any;
@@ -98,6 +98,31 @@ describe("User authentication route", () => {
       equal(jwt_payload.email, "test@test.fr");
       const db_user = await find_user_by_email("test@test.fr");
       equal(jwt_payload.uid, db_user.id);
+    });
+
+    it("Protected route blocks unauthenticated requests", async () => {
+      const response = await fetch(`http://localhost:${port}/protected`);
+      equal(response.status, 401);
+    });
+
+    it("Protected route allows authenticated requests", async () => {
+      const hasher = new PasswordHash();
+      let jwt_token: string = generateJwtToken({
+        email: "test@test.fr",
+        id: "123",
+        role: true,
+        passwordHash: await hasher.fromClearPassword("password"),
+      });
+
+      const myHeaders = new Headers();
+      myHeaders.append("Authorization", `Bearer ${jwt_token}`);
+
+      const response = await fetch(`http://localhost:${port}/protected`, {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow"
+      });
+      equal(response.status, 200);
     });
   });
 });
