@@ -17,4 +17,17 @@ describe("PasswordHash", () => {
     const verify2 = await hash2.verify(password);
     assert(verify2);
   });
+
+  it("should fail if password is too short", async () => {
+    const password = "pass";
+    const hasher = new PasswordHash();
+    let error: any = null;
+    try {
+      await hasher.fromClearPassword(password);
+    } catch (e) {
+      error = e;
+    }
+    assert(error !== null);
+    assert(error.message === "Password must be at least 8 characters long");
+  });
 });

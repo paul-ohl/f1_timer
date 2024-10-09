@@ -1,4 +1,4 @@
-import { User } from "../models/user.model";
+import User from "../types/user";
 import * as jwt from "jsonwebtoken";
 
 export interface JwtPayload {
@@ -16,7 +16,7 @@ export function generateJwtToken(user: User): string {
   }
   const payload: JwtPayload = {
     uid: user.id,
-    email: user.email,
+    email: user.email.getEmail(),
     role: user.role,
   };
   return jwt.sign({ payload }, process.env.JWT_SECRET, { expiresIn: "10h" });

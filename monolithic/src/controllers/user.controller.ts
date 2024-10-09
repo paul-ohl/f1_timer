@@ -1,25 +1,18 @@
 import { Request, Response } from "express";
-import PasswordHash from "../types/passwordHash";
-import { User } from "../models/user.model";
+import User, { createUser } from "../types/user";
 import { find_user_by_email, register_user } from "../services/user.service";
 import { generateJwtToken } from "../utils/jwt";
 
 export async function registerUser(req: Request, res: Response) {
   const { email, password, role } = req.body;
 
-  const passwordHash = new PasswordHash();
+  let newUser: User;
   try {
-    await passwordHash.fromClearPassword(password);
+    newUser = await createUser(null, email, password, role);
   } catch (e: any) {
     res.status(400).send(e.message);
     return;
   }
-
-  const newUser: User = {
-    email,
-    passwordHash,
-    role,
-  };
 
   try {
     await register_user(newUser);
