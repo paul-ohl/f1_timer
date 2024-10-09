@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { authMiddleware } from "../middleware/auth";
 import userRouter from "./user.routes";
+import timerRouter from "./timer.routes";
 
 const router = Router();
 
@@ -16,5 +17,6 @@ router.get("/protected", authMiddleware, (_req, res) => {
 });
 
 router.use("/", userRouter);
+router.use("/", timerRouter);
 
 export default router;

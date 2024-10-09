@@ -1,5 +1,7 @@
 interface Timer {
   id: number;
-  user_id: number;
+  userId: string;
   time: number;
 }
+
+export default Timer;
