@@ -103,6 +103,7 @@ describe("User authentication route", () => {
     it("Protected route blocks unauthenticated requests", async () => {
       const response = await fetch(`http://localhost:${port}/protected`);
       equal(response.status, 401);
+      equal(await response.text(), "Missing Authorization token");
     });
 
     it("Protected route allows authenticated requests", async () => {
@@ -120,9 +121,10 @@ describe("User authentication route", () => {
       const response = await fetch(`http://localhost:${port}/protected`, {
         method: "GET",
         headers: myHeaders,
-        redirect: "follow"
+        redirect: "follow",
       });
       equal(response.status, 200);
+      equal(await response.text(), "Protected OK for test@test.fr");
     });
   });
 });

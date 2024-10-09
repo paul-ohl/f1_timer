@@ -7,9 +7,9 @@ import { generateJwtToken } from "../utils/jwt";
 export async function registerUser(req: Request, res: Response) {
   const { email, password, role } = req.body;
 
-  const hashedPassword = new PasswordHash();
+  const passwordHash = new PasswordHash();
   try {
-    await hashedPassword.fromClearPassword(password);
+    await passwordHash.fromClearPassword(password);
   } catch (e: any) {
     res.status(400).send(e.message);
     return;
@@ -17,7 +17,7 @@ export async function registerUser(req: Request, res: Response) {
 
   const newUser: User = {
     email,
-    passwordHash: hashedPassword,
+    passwordHash,
     role,
   };
 

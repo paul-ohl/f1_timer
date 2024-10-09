@@ -9,7 +9,7 @@ export function authMiddleware(
   const authHeader = req.header("Authorization");
   const token = authHeader?.split(" ")[1];
   if (!authHeader || !token) {
-    res.status(401).send("Unauthorized");
+    res.status(401).send("Missing Authorization token");
     return;
   }
 
