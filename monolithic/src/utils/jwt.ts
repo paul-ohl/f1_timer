@@ -1,5 +1,5 @@
-import User from "../types/user";
-import * as jwt from "jsonwebtoken";
+import User from '../types/user';
+import jwt from 'jsonwebtoken';
 
 export interface JwtPayload {
   uid: string;
@@ -9,22 +9,22 @@ export interface JwtPayload {
 
 export function generateJwtToken(user: User): string {
   if (!process.env.JWT_SECRET) {
-    throw new Error("JWT_SECRET is not set");
+    throw new Error('JWT_SECRET is not set');
   }
   if (!user.id) {
-    throw new Error("User data is incomplete");
+    throw new Error('User data is incomplete');
   }
   const payload: JwtPayload = {
     uid: user.id,
     email: user.email.getEmail(),
     role: user.role,
   };
-  return jwt.sign({ payload }, process.env.JWT_SECRET, { expiresIn: "10h" });
+  return jwt.sign({ payload }, process.env.JWT_SECRET, { expiresIn: '10h' });
 }
 
 export function verifyJwtToken(token: string): JwtPayload {
   if (!process.env.JWT_SECRET) {
-    throw new Error("JWT_SECRET is not set");
+    throw new Error('JWT_SECRET is not set');
   }
   const decoded: jwt.JwtPayload = jwt.verify(
     token,

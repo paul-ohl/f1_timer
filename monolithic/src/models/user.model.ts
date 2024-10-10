@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema } from 'mongoose';
 
 const UserSchema = new Schema({
   email: String,
@@ -6,4 +6,4 @@ const UserSchema = new Schema({
   role: Boolean,
 });
 
-export const UserModel = mongoose.model("User", UserSchema);
+export const UserModel = mongoose.model('User', UserSchema);

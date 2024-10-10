@@ -8,7 +8,7 @@ services:
     volumes:
       - ./:/home/node/app
     ports:
-      - "3000:3000"
+      - '3000:3000'
     depends_on:
       - mongo
 
@@ -18,7 +18,7 @@ services:
       dockerfile: ./docker/mongo/Dockerfile
     restart: always
     ports:
-      - "27017:27017"
+      - '27017:27017'
     volumes:
       - mongo_data:/data/db
 
@@ -31,7 +31,7 @@ services:
       ME_CONFIG_BASICAUTH_PASSWORD: $MONGO_PASSWORD
       ME_CONFIG_MONGODB_SERVER: mongo
     ports:
-      - "0.0.0.0:8081:8081"
+      - '0.0.0.0:8081:8081'
     depends_on:
       - mongo
 

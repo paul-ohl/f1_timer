@@ -1,6 +1,6 @@
 // import { connect_to_database } from "../../src/config/db";
 // import router from "../../src/routes/router";
-// import * as express from "express";
+// import express from "express";
 // import { equal } from "assert";
 // import mongoose from "mongoose";
 // import {

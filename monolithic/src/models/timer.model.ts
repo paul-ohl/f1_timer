@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema } from 'mongoose';
 
 const TimerSchema = new Schema({
   id: Number,
@@ -6,4 +6,4 @@ const TimerSchema = new Schema({
   time: Number,
 });
 
-export const TimerModel = mongoose.model("Timer", TimerSchema);
+export const TimerModel = mongoose.model('Timer', TimerSchema);

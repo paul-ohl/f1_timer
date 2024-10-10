@@ -1,7 +1,7 @@
-import { Request, Response } from "express";
-import User, { createUser } from "../types/user";
-import { find_user_by_email, register_user } from "../services/user.service";
-import { generateJwtToken } from "../utils/jwt";
+import { Request, Response } from 'express';
+import User, { createUser } from '../types/user';
+import { find_user_by_email, register_user } from '../services/user.service';
+import { generateJwtToken } from '../utils/jwt';
 
 export async function registerUser(req: Request, res: Response) {
   const { email, password, role } = req.body;
@@ -20,7 +20,7 @@ export async function registerUser(req: Request, res: Response) {
     res.status(500).send(e.message);
     return;
   }
-  res.status(201).send("User created");
+  res.status(201).send('User created');
 }
 
 export async function loginUser(req: Request, res: Response) {
@@ -43,6 +43,6 @@ export async function loginUser(req: Request, res: Response) {
       res.status(500).send(e.message);
     }
   } else {
-    res.status(401).send("Login failed");
+    res.status(401).send('Login failed');
   }
 }

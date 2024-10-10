@@ -1,5 +1,5 @@
-import PasswordHash from "../types/passwordHash";
-import Email from "../types/email";
+import PasswordHash from '../types/passwordHash';
+import Email from '../types/email';
 
 export type UserId = string;
 
@@ -17,7 +17,7 @@ export async function createUser(
   role: boolean,
 ): Promise<User> {
   if (!email || !role || !password) {
-    throw new Error("User data is invalid");
+    throw new Error('User data is invalid');
   }
 
   let passwordHash: PasswordHash;
@@ -29,12 +29,20 @@ export async function createUser(
     passwordHash = await hasher.fromClearPassword(password);
   }
 
-  return {
-    id,
-    email: new Email(email),
-    passwordHash,
-    role,
-  };
+  if (id) {
+    return {
+      id,
+      email: new Email(email),
+      passwordHash,
+      role,
+    };
+  } else {
+    return {
+      email: new Email(email),
+      passwordHash,
+      role,
+    };
+  }
 }
 
 export function userToModel(user: User) {
