@@ -1,9 +1,10 @@
+import { Server } from 'http';
 import router from '../../src/routes/router';
 import express from 'express';
 
 describe('Health check route', () => {
-  let server: any;
-  let port = Math.floor(Math.random() * 1000) + 3000;
+  let server: Server;
+  const port = Math.floor(Math.random() * 1000) + 3000;
 
   beforeAll(async () => {
     const app: express.Express = express();
@@ -15,7 +16,7 @@ describe('Health check route', () => {
   });
 
   afterAll(async () => {
-    await server.close();
+    server.close();
     console.log('Server closed');
   });
 

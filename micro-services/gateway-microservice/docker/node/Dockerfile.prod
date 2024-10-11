@@ -8,9 +8,7 @@ COPY ./tsconfig.json .
 
 # npm ci installs the packages using
 # only the package-lock.json file
-RUN npm ci --ignore-scripts
-
-RUN npm run build
+RUN npm ci --ignore-scripts && npm run build
 
 # There are 2 steps to avoid having the source files in the final image
 FROM node:20.17-slim AS production
