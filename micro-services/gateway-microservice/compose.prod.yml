@@ -1,0 +1,16 @@
+services:
+  backend:
+    build:
+      context: ./
+      dockerfile: ./docker/node/Dockerfile.prod
+    env_file:
+      - .env
+    ports:
+      - '3000:3000'
+    restart: always
+    networks:
+      - traefik_routing
+
+networks:
+  traefik_routing:
+    external: true
