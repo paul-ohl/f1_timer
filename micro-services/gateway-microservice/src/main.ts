@@ -10,7 +10,10 @@ async function main() {
 
   const app: Express = express();
   app.use(express.json());
+  app.disable('x-powered-by');
+
   app.use('/', router);
+
   app.listen(appPort, () => {
     console.log(`Server is running on port ${appPort}`);
   });
