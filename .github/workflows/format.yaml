@@ -17,7 +17,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix: 
-        folder: ["monolithic"]
+        folder: 
+          - "monolithic"
+          - "micro-services/gateway-microservice"
 
     steps:
     - name: Git checkout

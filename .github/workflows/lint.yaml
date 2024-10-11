@@ -1,4 +1,4 @@
-name: Run tests
+name: Check lint with eslint
 
 on:
   push:
@@ -18,25 +18,19 @@ jobs:
     strategy:
       matrix: 
         folder: 
-          - "monolithic"
           - "micro-services/gateway-microservice"
 
     steps:
     - name: Git checkout
       uses: actions/checkout@v4
 
-    - name: Use Node.js 20.17
+    - name: Use Node.js 22.x
       uses: actions/setup-node@v4
       with:
-        node-version: 20.17
-
-    - name: Start MongoDB
-      uses: supercharge/mongodb-github-action@1.11.0
-      with:
-        mongodb-version: '7.0.14'
+        node-version: 22.x
 
     - run: npm install
       working-directory: ${{ matrix.folder }}
 
-    - run: npm run test
+    - run: npm run lint
       working-directory: ${{ matrix.folder }}
