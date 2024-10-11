@@ -8,4 +8,4 @@ services:
     volumes:
       - ./:/home/node/app
     ports:
-      - '${GATEWAY_PORT}:${GATEWAY_PORT}'
+      - "${GATEWAY_PORT}:${GATEWAY_PORT}"
