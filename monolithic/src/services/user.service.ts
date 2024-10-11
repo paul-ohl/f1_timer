@@ -1,4 +1,5 @@
 import { UserModel } from '../models/user.model';
+import Email from '../types/email';
 import PasswordHash from '../types/passwordHash';
 import User, { UserId, createUser, userToModel } from '../types/user';
 
@@ -12,7 +13,7 @@ export async function register_user(user: User): Promise<UserId> {
   }
 }
 
-export async function find_user_by_email(email: string): Promise<User> {
+export async function find_user_by_email(email: Email): Promise<User> {
   const dbUser = await UserModel.findOne({ email: email });
 
   if (!dbUser) {
