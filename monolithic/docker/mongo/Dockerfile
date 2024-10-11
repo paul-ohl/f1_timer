@@ -1,2 +1,2 @@
-FROM mongo:7.0.14
+FROM mongo:7.0.14-jammy
 EXPOSE 27017

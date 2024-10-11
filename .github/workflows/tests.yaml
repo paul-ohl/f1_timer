@@ -15,15 +15,15 @@ jobs:
     - name: Git checkout
       uses: actions/checkout@v4
 
-    - name: Use Node.js 22.x
+    - name: Use Node.js 20.17
       uses: actions/setup-node@v4
       with:
-        node-version: 22.x
+        node-version: 20.17
 
     - name: Start MongoDB
       uses: supercharge/mongodb-github-action@1.11.0
       with:
-        mongodb-version: '8.0'
+        mongodb-version: '7.0.14'
 
     - run: npm install
       working-directory: ${{ matrix.folder }}

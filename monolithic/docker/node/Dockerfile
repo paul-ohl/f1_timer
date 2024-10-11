@@ -5,7 +5,8 @@ ENV NODE_ENV=development
 COPY ./package*.json ./
 RUN npm install --ignore-scripts
 
-COPY . .
+COPY ./src ./src
+COPY ./tsconfig.json .
 
 RUN npm run build
 
