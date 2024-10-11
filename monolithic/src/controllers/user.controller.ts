@@ -31,7 +31,7 @@ export async function loginUser(req: Request, res: Response) {
   try {
     domainEmail = new Email(email);
   } catch (e: any) {
-    res.status(400).send("Invalid email");
+    res.status(400).send('Invalid email');
     return;
   }
   let db_user: User;
