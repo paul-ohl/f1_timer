@@ -1,7 +1,8 @@
-import { Request, Response } from "express";
-import User, { createUser } from "../types/user";
-import { find_user_by_email, register_user } from "../services/user.service";
-import { generateJwtToken } from "../utils/jwt";
+import { Request, Response } from 'express';
+import User, { createUser } from '../types/user';
+import { find_user_by_email, register_user } from '../services/user.service';
+import { generateJwtToken } from '../utils/jwt';
+import Email from '../types/email';
 
 export async function registerUser(req: Request, res: Response) {
   const { email, password, role } = req.body;
@@ -20,15 +21,22 @@ export async function registerUser(req: Request, res: Response) {
     res.status(500).send(e.message);
     return;
   }
-  res.status(201).send("User created");
+  res.status(201).send('User created');
 }
 
 export async function loginUser(req: Request, res: Response) {
   const { email, password } = req.body;
 
+  let domainEmail: Email;
+  try {
+    domainEmail = new Email(email);
+  } catch (e: any) {
+    res.status(400).send('Invalid email');
+    return;
+  }
   let db_user: User;
   try {
-    db_user = await find_user_by_email(email);
+    db_user = await find_user_by_email(domainEmail);
   } catch (e: any) {
     res.status(400).send(e.message);
     return;
@@ -43,6 +51,6 @@ export async function loginUser(req: Request, res: Response) {
       res.status(500).send(e.message);
     }
   } else {
-    res.status(401).send("Login failed");
+    res.status(401).send('Login failed');
   }
 }

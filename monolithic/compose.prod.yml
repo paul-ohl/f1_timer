@@ -1,0 +1,30 @@
+services:
+  backend:
+    build:
+      context: ./
+      dockerfile: ./docker/node/Dockerfile.prod
+    env_file:
+      - .env
+    ports:
+      - '3000:3000'
+    depends_on:
+      - mongo
+    restart: always
+    networks:
+      - traefik_routing
+
+  mongo:
+    build:
+      context: ./
+      dockerfile: ./docker/mongo/Dockerfile.prod
+    restart: always
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
+networks:
+  traefik_routing:
+    external: true
