@@ -8,5 +8,5 @@ export default tseslint.config(
   ...tseslint.configs.strict,
   {
     ignores: ['node_modules', 'dist', 'jest.config.js'],
-  }
+  },
 );
