@@ -1,0 +1,25 @@
+services:
+  backend:
+    build:
+      context: ./
+      dockerfile: ./docker/node/Dockerfile
+    env_file:
+      - .env
+    volumes:
+      - ./:/home/node/app
+    ports:
+      - '${TIME_PORT}:${TIME_PORT}'
+
+  mongo:
+    build:
+      context: ./
+      dockerfile: ./docker/mongo/Dockerfile
+    restart: always
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
+    name: mongo_data

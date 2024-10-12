@@ -1,0 +1,24 @@
+services:
+  backend:
+    build:
+      context: ./
+      dockerfile: ./docker/node/Dockerfile.prod
+    env_file:
+      - .env
+    ports:
+      - '${TIME_PORT}:${TIME_PORT}'
+    restart: always
+    networks:
+      - traefik_routing
+
+  mongo:
+    build:
+      context: ./
+      dockerfile: ./docker/mongo/Dockerfile.prod
+    restart: always
+    volumes:
+      - mongo_data:/data/db
+
+networks:
+  traefik_routing:
+    external: true
